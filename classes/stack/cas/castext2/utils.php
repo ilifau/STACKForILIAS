@@ -16,6 +16,7 @@
 
 declare(strict_types = 1);
 
+use ilPlugin;
 
 
 /* CASText2 parser utils */
@@ -608,7 +609,14 @@ class castext2_parser_utils {
     }
 
     public static function stack_cors_link(string $filename): string {
-        $url = '/Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion/classes/utils/corsscripts/cors.php?name=' . urlencode($filename);
+        #$url = '/Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion/classes/utils/corsscripts/cors.php?name=' . urlencode($filename);
+        global $DIC;
+        $http_path = rtrim(ILIAS_HTTP_PATH, '/');
+        $plugin_path = $http_path . '/Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion';
+        $url = $plugin_path . '/classes/utils/corsscripts/cors.php?name=' . urlencode($filename);
+
+
+
         return $url;
     }
 
