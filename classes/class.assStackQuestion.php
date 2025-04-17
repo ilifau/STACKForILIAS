@@ -1436,7 +1436,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
         // @codingStandardsIgnoreStart
         // Work out the right seed to use.
         if (is_null($this->seed) or $deployed_seeds_view) {
-            if ($force_variant) {
+            if ($force_variant) {                
                 $this->seed = $variant;
             } else if (!$this->hasRandomVariants()) {
                 // Randomisation not used.
@@ -1448,9 +1448,8 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
             } else {
                 // This question uses completely free randomisation.
                 $this->seed = $variant;
-            }
+            }            
         }
-
         $this->initialiseQuestionFromSeed();
     }
 
@@ -1462,9 +1461,10 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
      */
     public function initialiseQuestionFromSeed()
     {
+        
         // We can detect a logically faulty question by checking if the cache can
-        // return anything if it can't then we can simply skip to the output of errors.
-        if ($this->getCached('units') !== null) {
+        // return anything if it can't then we can simply skip to the output of errors.        
+        if ($this->getCached('units') !== null) {            
             // Build up the question session out of all the bits that need to go into it.
             // 1. question variables.
             $session = new stack_cas_session2([], $this->options, $this->seed);
@@ -1481,7 +1481,6 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
 
             // Construct the security object. But first units declaration into the session.
             $units = (boolean)$this->getCached('units');
-
             // If we have units we might as well include the units declaration in the session.
             // To simplify authors work and remove the need to call that long function.
             // TODO: Maybe add this to the preable to save lines, but for now documented here.
@@ -2966,7 +2965,8 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
 
         // Do we have that particular thing in the cache?
         if ($this->compiled_cache === null || !array_key_exists($key, $this->compiled_cache)) {
-            // If not do the compilation.
+            // If not do the compilation.  
+            var_dump('getcached<br>');
                 $this->compiled_cache = assStackQuestion::compile($this->id,
                     $this->question_variables, $this->inputs, $this->prts,
                     $this->options, $this->getQuestion(), assStackQuestionUtils::FORMAT_HTML,
@@ -2977,7 +2977,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
                     $this->prt_correct, $this->prt_correct_format,
                     $this->prt_partially_correct, $this->prt_partially_correct_format,
                     $this->prt_incorrect, $this->prt_incorrect_format, $this->penalty);
-        }
+        }        
 
         // A run-time error means we don't have the $key in the cache.
         // We don't want an error here, we want to degrade gracefully.*/
@@ -3442,7 +3442,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
                 $cc['includes']['keyval'] = $c['includes'];
             }
         }
-
+        
         // Then do some basic detail collection related to the inputs and PRTs.
         foreach ($inputs as $input) {
             if (is_a($input, 'stack_units_input')) {
@@ -3450,6 +3450,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
                 break;
             }
         }
+                
         $cc['required'] = [];
         $cc['prt-preamble'] = [];
         $cc['prt-contextvariables'] = [];
@@ -3460,7 +3461,12 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
         foreach ($prts as $name => $prt) {
             $path = '/p/' . $i;
             $i = $i + 1;
+      
             $r = $prt->compile($inputs, $forbiddenkeys, $defaultpenalty, $sec, $path, $map);
+            if ($i == 3) {
+                //echo '<pre>' . var_export($r, true) . '</pre>';
+                //exit();
+            }                      
             $cc['required'][$name] = $r['required'];
             if ($r['be'] !== null && $r['be'] !== '') {
                 $cc['prt-preamble'][$name] = $r['be'];
@@ -3472,6 +3478,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
             $cc['prt-definition'][$name] = $r['def'];
             $cc['prt-trace'][$name] = $r['trace'];
             $units = $units || $r['units'];
+            
             if (isset($r['includes'])) {
                 if (!isset($cc['includes'])) {
                     $cc['includes'] = $r['includes'];
@@ -3493,7 +3500,8 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
                 }
             }
         }
-
+    
+        
         // Note that instead of just adding the unit loading to the 'preamble-qv'
         // and forgetting about units we do keep this bit of information stored
         // as it may be used in input configuration at some later time.
@@ -3533,7 +3541,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
             'questionid' => $id,
             'field' => 'prtincorrect'
         ]);
-
+        
         // Compile the castext fragments.
         $ctoptions = [
             'bound-vars' => $forbiddenkeys,
@@ -3567,7 +3575,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
                 }
             }
         }
-
+        
         $ct = castext2_evaluatable::make_from_source($questionnote, '/qn');
         if (!$ct->get_valid(assStackQuestionUtils::FORMAT_HTML, $ctoptions, $sec)) {
             throw new stack_exception('Error(s) in question-note: ' . implode('; ', $ct->get_errors(false)));
@@ -3632,7 +3640,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
             $si[$key][-2] = -2;
         }
         $cc['security-context'] = $si;
-
+        
         return $cc;
     }
 

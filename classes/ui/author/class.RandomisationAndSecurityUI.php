@@ -117,15 +117,14 @@ class RandomisationAndSecurityUI
     {
         $html = "";
         $uses_randomisation = false;
-
         //Instantiate Question if not.
         if (!$this->data["question"]->isInstantiated()) {
             if (isset($this->data["active_variant_identifier"])) {
                 $this->data["question"]->questionInitialisation((int)$this->data["active_variant_identifier"], true);
-            } else {
+            } else {     
                 $this->data["question"]->questionInitialisation(1, true);
             }
-        }
+        }        
 
         if (assStackQuestionUtils::_hasRandomVariables($this->data["question"]->question_variables)) {
             $uses_randomisation = true;
