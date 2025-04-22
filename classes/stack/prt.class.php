@@ -387,6 +387,7 @@ class stack_potentialresponse_tree_lite {
         if ($this->feedbackvariables === null) {
             $this->feedbackvariables = '';
         }
+                
 
         // Start a fresh trace with each compile.
         $this->trace = array();
@@ -395,23 +396,27 @@ class stack_potentialresponse_tree_lite {
             $this->trace[] = '/* ------------------- */';
         }
 
+
+
         $fv = new stack_cas_keyval($this->feedbackvariables);
         $fv->set_security($security);
         $fv->get_valid();
+      
         if(!$fv->get_valid()) {
             $error_message = '';
             foreach($fv->get_errors() as $error) {
                 $error_message .= $error . "\n";
             }
             throw new stack_exception('Error in feedback variables. ' . $error_message);
-        }
+        }    
+                
         $fv = $fv->compile($pathprefix . '/fv', $map);
         $r['be'] = $fv['blockexternal'];
         $r['cv'] = $fv['contextvariables'];
         if (isset($fv['includes'])) {
             $r['includes'] = [];
             $r['includes']['keyval'] = $fv['includes'];
-        }
+        }           
         $usage = $fv['references']; // We need to track the usage of vars over the whole thing.
         $usage['write']['%PRT_FEEDBACK'] = true;
         $usage['write']['%PRT_SCORE'] = true;
@@ -489,6 +494,7 @@ class stack_potentialresponse_tree_lite {
             }
             $body .= $nc . '),';
         }
+        
 
         // Finally round the score and return the relevant details.
         $body .= '%PRT_SCORE:ev(float(round(max(min(%PRT_SCORE,1.0),0.0)*1000)/1000),simp),';
@@ -513,6 +519,7 @@ class stack_potentialresponse_tree_lite {
         // We want to make sure that any writing inside this logic does not affect
         // the outside. However, some of the vars that could be written come from
         // the outside and need to be pased in as arguments.
+
         foreach ($usage['write'] as $key => $ignore) {
             if (isset($forcelocals[$key])) {
                 $aslocal[$key] = true;
@@ -556,7 +563,7 @@ class stack_potentialresponse_tree_lite {
                 $asarg = array_slice($asarg, 0, 39, true);
             }
         }
-
+        
         // Then the definition of the function.
         $r['sig'] = 'prt_' . $this->name . '(' . implode(',', array_keys($asarg)) . ')';
 
@@ -565,6 +572,8 @@ class stack_potentialresponse_tree_lite {
         $r['trace'] = $this->trace;
 
         $r['def'] = $r['sig'] . ':=block([' . implode(',', array_keys($aslocal)) . '],' . $body . ')';
+        //var_dump($r);
+        //exit();                   
         return $r;
     }
 
@@ -641,6 +650,7 @@ class stack_potentialresponse_tree_lite {
         $cs = stack_ast_container::make_from_teacher_source($at, $context . '/at');
         $cs->set_securitymodel($security);
         if (!$cs->get_valid()) {
+            //TODO: Cornel hier wird der error answer-text bla ausgegeben
             throw new stack_exception('Error in ' . $context . ' answertest parameters. ' . $cs->get_errors());
         }
         $usage = $cs->get_variable_usage($usage); // Update the references.

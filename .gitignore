@@ -5,6 +5,8 @@
 .idea
 /nbproject
 
+/gitignore
+
 # Don't ignore .gitkeep and .htaccess files
 # these are used to commit empty directories
 !.gitkeep

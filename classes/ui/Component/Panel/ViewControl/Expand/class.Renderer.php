@@ -43,7 +43,13 @@ class Renderer extends AbstractComponentRenderer
         $DIC->ui()->mainTemplate()->addCss("Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion/templates/Component/expand.css");
         $DIC->ui()->mainTemplate()->addJavaScript("Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion/templates/Component/expand.js");
 
+
+        $plugin_web_path = rtrim(ILIAS_HTTP_PATH, '/') . '/Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion';
+        
+
         $tpl = new ilTemplate("Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion/templates/Component/tpl.expand.html", true, true);
+
+        $tpl->setVariable('PLUGIN_WEB_PATH', $plugin_web_path);
 
         $tpl->setVariable("IMG_EXP_OR_COL", $component->isExpandedByDefault() ? "exp" : "col");
         $tpl->setVariable("IMG_ALT", $component->isExpandedByDefault() ? "Expanded" : "Collapsed");
