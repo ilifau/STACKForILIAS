@@ -684,14 +684,12 @@ class castext2_parser_utils {
                 if ($islocalfile) {
                     $cache[$translated] = file_get_contents($translated);
                 } else {
-                    // TODO: This should be implemented in order to behave as Moodle.
-//                    $translated = clean_param($translated, PARAM_URL);
-//                    $headers = get_headers($translated);
-//                    if (strpos($headers[0], '404') === false) {
-//                        $cache[$translated] = download_file_content($translated);
-//                    } else {
-//                        $cache[$translated] = false;
-//                    }
+                    $headers = get_headers($translated);
+                    if (strpos($headers[0], '404') === false) {
+                        $cache[$translated] = file_get_contents($translated);
+                    } else {
+                        $cache[$translated] = false;
+                    }
                 }
             }
             return $cache[$translated];
