@@ -189,6 +189,7 @@ class StackQuestionAuthoringUI
             "sqrtsign" => $options["sqrtsign"] ? 1 : 0,
             "complexno" => $options["complexno"],
             "inversetrig" => $options["inversetrig"],
+            "logicsymbol" => $options["logicsymbol"],
             "matrixparens" => $options["matrixparens"]
         ));
 
@@ -425,6 +426,11 @@ class StackQuestionAuthoringUI
             "arccos" => $this->plugin->txt('options_inverse_trigonometric_arccos')
         ], $this->plugin->txt("options_inverse_trigonometric_info"))->withRequired(true)
             ->withValue($this->question->options->get_option("inversetrig"));
+        $inputs["logicsymbol"] = $this->factory->input()->field()->select($this->plugin->txt("options_logic_symbol"), [
+            "lang" => $this->plugin->txt('options_logic_symbol_lang'),
+            "symbol" => $this->plugin->txt('options_logic_symbol_symbol'),
+        ], $this->plugin->txt("options_logic_symbol_info"))->withRequired(true)
+            ->withValue($this->question->options->get_option("logicsymbol"));
         $inputs["matrixparens"] = $this->factory->input()->field()->select($this->plugin->txt("options_matrix_parens"), [
             "[" => "[",
             "(" => "(",

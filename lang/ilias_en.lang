@@ -312,6 +312,10 @@ options_inverse_trigonometric_info#:#Controls how inverse trigonometric function
 options_inverse_trigonometric_cos#:#cos^(-1)(x)
 options_inverse_trigonometric_acos#:#acos(x)
 options_inverse_trigonometric_arccos#:#arccos(x)
+options_logic_symbol#:#Logic symbols
+options_logic_symbol_info#:#Controls how logical symbols should be displayed in CAS output.
+options_logic_symbol_lang#:#Language
+options_logic_symbol_symbol#:#Symbolic
 default_options_settings#:#Default options settings
 input_type#:#Input type#:#
 input_type_info#:#This determines the type of the input element, e.g. form field, true/false, text area.
