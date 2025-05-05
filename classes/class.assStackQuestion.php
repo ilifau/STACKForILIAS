@@ -2966,7 +2966,6 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
         // Do we have that particular thing in the cache?
         if ($this->compiled_cache === null || !array_key_exists($key, $this->compiled_cache)) {
             // If not do the compilation.  
-            var_dump('getcached<br>');
                 $this->compiled_cache = assStackQuestion::compile($this->id,
                     $this->question_variables, $this->inputs, $this->prts,
                     $this->options, $this->getQuestion(), assStackQuestionUtils::FORMAT_HTML,
