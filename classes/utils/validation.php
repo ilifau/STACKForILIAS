@@ -24,7 +24,25 @@ error_reporting(E_ALL);
 ini_set("display_errors", "on");
 // fim.
 
-chdir("../../../../../../../../../");
+//chdir("../../../../../../../../../");
+
+$script_path = realpath(__DIR__);
+$ilias_root = null;
+
+$parts = explode('/', $script_path);
+for ($i = count($parts) - 1; $i >= 0; $i--) {
+    if ($parts[$i] === 'Customizing') {
+        // Alles davor ist der Root
+        $ilias_root = implode('/', array_slice($parts, 0, $i));
+        break;
+    }
+}
+
+if (!$ilias_root || !file_exists($ilias_root . '/include/inc.header.php')) {
+    die("ILIAS root not found or invalid: $ilias_root");
+}
+
+chdir($ilias_root);
 
 // Avoid redirection to start screen
 // (see ilInitialisation::InitILIAS for details)
@@ -35,8 +53,21 @@ require_once './Customizing/global/plugins/Modules/TestQuestionPool/Questions/as
 require_once './Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion/classes/utils/class.assStackQuestionInitialization.php';
 
 header('Content-type: application/json; charset=utf-8');
-echo json_encode(checkUserResponse($_REQUEST['question_id'], $_REQUEST['input_name'], $_REQUEST['input_value']));
+//echo json_encode(checkUserResponse($_REQUEST['question_id'], $_REQUEST['input_name'], $_REQUEST['input_value']));
+$response = checkUserResponse($_REQUEST['question_id'], $_REQUEST['input_name'], $_REQUEST['input_value']);
+
+if ($response instanceof Throwable) {
+    $response = $response->getMessage();
+}
+
+if (!is_string($response)) {
+    $response = 'Ungültige Antwortstruktur';
+}
+
+header('Content-type: application/json; charset=utf-8');
+echo json_encode($response);
 exit;
+
 /**
  * Gets the students answer and send it to maxima in order to get the validation.
  * @param $question_id
