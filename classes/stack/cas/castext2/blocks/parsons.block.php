@@ -159,7 +159,7 @@ class stack_cas_castext2_parsons extends stack_cas_castext2_block {
                                 get_iframe_height,
                                 SUPPORTED_CALLBACK_FUNCTIONS
                 } from '" .
-            castext2_parser_utils::stack_cors_link('stacksortable.js') . "';\n";
+            castext2_parser_utils::stack_cors_link('stacksortable.min.js') . "';\n";
         $r->items[] = new MP_String($importcode);
 
         // Add flip orientation listener to the orientation button.
