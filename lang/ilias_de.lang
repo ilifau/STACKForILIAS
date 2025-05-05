@@ -712,4 +712,4 @@ ui_admin_configuration_defaults_feedback_styles_title#:#Feedback-Stile
 ui_admin_configuration_defaults_feedback_styles_name#:#Style name
 ui_admin_configuration_defaults_feedback_styles_style#:#Style
 input_must_verify_to_false#:#Da Sie ausgewählt haben, dass keine Überprüfung angezeigt werden soll, wurde die Option "Schüler müssen überprüfen" abgewählt.
-qpl_qst_xqcas_uninstall_not_supported#:#Frage-Plugins können nicht deinstalliert werden. Um Fehler zu vermeiden, versuchen Sie, sie zu deaktivieren.
+uninstall_not_supported#:#Frage-Plugins können nicht deinstalliert werden. Um Fehler zu vermeiden, versuchen Sie, sie zu deaktivieren.
