@@ -16,7 +16,7 @@
 
 declare(strict_types = 1);
 
-use ilPlugin;
+//use ilPlugin;
 
 
 /* CASText2 parser utils */
@@ -608,6 +608,17 @@ class castext2_parser_utils {
         return false;
     }
 
+
+    public static function stack_cors_link(string $filename): string {
+        return self::getPluginWebPath() . '/classes/utils/corsscripts/cors.php?name=' . urlencode($filename);
+    }
+    
+    protected static function getPluginWebPath(): string {
+        return '/Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion';
+    }
+    
+
+    /*
     public static function stack_cors_link(string $filename): string {
         #$url = '/Customizing/global/plugins/Modules/TestQuestionPool/Questions/assStackQuestion/classes/utils/corsscripts/cors.php?name=' . urlencode($filename);
         global $DIC;
@@ -619,4 +630,5 @@ class castext2_parser_utils {
 
         return $url;
     }
+        */
 }
