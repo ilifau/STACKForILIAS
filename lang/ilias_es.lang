@@ -313,6 +313,10 @@ options_inverse_trigonometric_info#:#Visualización de funciones trigonométrica
 options_inverse_trigonometric_cos#:#cos^(-1)(x)
 options_inverse_trigonometric_acos#:#acos(x)
 options_inverse_trigonometric_arccos#:#arccos(x)
+options_logic_symbol#:#Símbolos lógicos
+options_logic_symbol_info#:#Controla la representación de los símbolos lógicos en la salida CAS.
+options_logic_symbol_lang#:#Lenguaje
+options_logic_symbol_symbol#:#Simbólico
 default_options_settings#:#Configuración predeterminada para opciones de preguntas
 input_type#:#Tipo de entrada
 input_type_info#:#Tipo de elemento de entrada, por ejemplo, campo de formulario, verdadero/falso, campo de texto multilínea.
