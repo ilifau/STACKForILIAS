@@ -1019,7 +1019,7 @@ class assStackQuestionGUI extends assQuestionGUI
 		$this->getQuestionTemplate();
 
 		//Create GUI object
-		$scoring_gui = new ScoringUI($this->plugin, $this->object);
+		$scoring_gui = new ScoringUI($this->plugin, $this->object, $this->object->getPoints());
 
 		//Returns Deployed seeds form
 		$this->tpl->setVariable("QUESTION_DATA", $scoring_gui->getScoringPanelUIComponent());

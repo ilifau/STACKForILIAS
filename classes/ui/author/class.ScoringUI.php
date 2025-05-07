@@ -1,16 +1,4 @@
 <?php
-declare(strict_types=1);
-
-namespace classes\ui\author;
-
-use assStackQuestion;
-use Expand;
-use ilCtrl;
-use ilCtrlException;
-use ILIAS\UI\Component\Input\Container\Form\Standard;
-use ILIAS\UI\Factory;
-use ILIAS\UI\Renderer;
-use ilassStackQuestionPlugin;
 
 /**
  * This file is part of the STACK Question plugin for ILIAS, an advanced STEM assessment tool.
@@ -30,6 +18,27 @@ use ilassStackQuestionPlugin;
  * stack@surlabs.es
  *
  *********************************************************************/
+
+declare(strict_types=1);
+
+namespace classes\ui\author;
+
+use assStackQuestion;
+use classes\ui\StackScoringTableData;
+use classes\ui\StackScoringTableGUI;
+use Expand;
+use ilCtrl;
+use ilCtrlException;
+use ILIAS\UI\Component\Input\Container\Form\Standard;
+use ILIAS\UI\Factory;
+use ILIAS\UI\Renderer;
+use ilassStackQuestionPlugin;
+
+/**
+ * ScoringUI
+ *
+ * @authors Jesús Copado Mejías, Saúl Díaz Díaz , Abraham Morales Rodríguez <stack@surlabs.es>
+ */
 class ScoringUI
 {
     private ilassStackQuestionPlugin $plugin;
@@ -45,12 +54,13 @@ class ScoringUI
      * @param ilassStackQuestionPlugin $plugin
      * @param assStackQuestion $question The question object
      */
-    public function __construct(ilassStackQuestionPlugin $plugin, assStackQuestion $question)
+    public function __construct(ilassStackQuestionPlugin $plugin, assStackQuestion $question, float $questionPoints)
     {
         global $DIC;
 
         $this->plugin = $plugin;
         $this->question = $question;
+        $this->questionPoints = $questionPoints;
         $this->factory = $DIC->ui()->factory();
         $this->renderer = $DIC->ui()->renderer();
         $this->control = $DIC->ctrl();
@@ -67,8 +77,7 @@ class ScoringUI
     public function getScoringPanelUIComponent(): string
     {
         $form = $this->renderForm();
-        $table = $this->resultTable();
-
+        $table = $this->prtTableRender();
         return $form . $table;
     }
 
@@ -79,7 +88,6 @@ class ScoringUI
     public function renderForm(): string
     {
         $form = $this->buildForm();
-
 
         if ($this->request->getMethod() == "POST") {
             $form = $form->withRequest($this->request);
@@ -97,10 +105,12 @@ class ScoringUI
     /**
      * @throws ilCtrlException
      */
+
     public function buildForm(): Standard
     {
+        $info = $this->plugin->txt("sco_current_scoring_info") . "<br>" . $this->plugin->txt('sco_info') . "</br>";
         $inputs = [
-            "points" => $this->factory->input()->field()->numeric($this->plugin->txt("sco_current_scoring_form_input"), $this->plugin->txt("sco_current_scoring_info"))
+            "points" => $this->factory->input()->field()->numeric($this->plugin->txt("sco_current_scoring_form_input"), $info)
                 ->withValue($this->question->getPoints()),
         ];
 
@@ -109,12 +119,14 @@ class ScoringUI
             [
                 "scoring" => $this->factory->input()->field()->section($inputs, $this->plugin->txt("sco_scoring_form")),
             ]
+
         );
     }
 
     /**
      * @throws ilCtrlException
      */
+
     public function save(array $result): void
     {
         global $DIC;
@@ -122,16 +134,14 @@ class ScoringUI
         $this->question->setPoints($result["scoring"]["points"]);
         $this->question->saveToDb();
 
-        // TODO Create confirm msg
         $DIC->ui()->mainTemplate()->setOnScreenMessage('success', $this->plugin->txt("sco_scoring_form_saved"), true);
         $DIC->ctrl()->redirectByClass('assStackQuestionGUI', 'scoringManagementPanel');
     }
 
-    public function resultTable(): string
+    public function prtTableRender(): string
     {
         $rendered = '';
         $max_weight = 0.0;
-
         foreach ($this->question->prts as $prt) {
             if (is_a($prt, 'stack_potentialresponse_tree_lite')) {
                 $max_weight += $prt->get_value();
@@ -139,16 +149,30 @@ class ScoringUI
         }
 
         foreach ($this->question->prts as $prt) {
-            $panel = $this->factory->panel()->standard($prt->get_name(), $this->factory->legacy(
-            $this->plugin->txt("sco_prt_value") . " <strong>" . ($prt->get_value() / $max_weight) * $this->question->getPoints() . " </strong>"
+            $panel = $this->factory->panel()->standard($this->plugin->txt("sco_prt_name") . " " . $prt->get_name(), $this->factory->legacy(
+                $this->plugin->txt("sco_prt_value") . " <strong>" . ($prt->get_value() / $max_weight) * $this->question->getPoints() . " </strong><br>" .
+                $this->getTableHtml($prt, $max_weight, $this->questionPoints)
             ))->withViewControls(array(
                 new Expand(),
-            ));
 
+            ));
             $rendered .= $this->renderer->render($panel);
         }
 
         return $rendered;
     }
+
+    public function getTableHtml($prt_data , $max_weight , $questionPoints): string
+    {
+        $columns = [
+            'node_name' => $this->factory->table()->column()->text($this->plugin->txt("sco_node_name"))->withIsSortable(false),
+            'positive_comparation' => $this->factory->table()->column()->number($this->plugin->txt("sco_node_positive"))->withIsSortable(false),
+            'negative_comparation' => $this->factory->table()->column()->number($this->plugin->txt("sco_node_negative"))->withIsSortable(false),
+        ];
+        $data_provider = new StackScoringTableData($prt_data, $max_weight , $questionPoints, $this->plugin);
+        $table_component = $this->factory->table()->data('', $columns, $data_provider)->withRequest($this->request);
+        return $this->renderer->render($table_component);
+    }
+
 
 }

@@ -420,6 +420,7 @@ edit_question#:#Editar pregunta
 sco_scoring#:#Evaluación
 sco_subtitle#:#En esta página, puede ver la estructura de evaluación de la pregunta para cambiar la puntuación máxima y verificar la asignación de puntos.
 sco_scoring_form#:#Estado de la evaluación
+sco_scoring_form_saved#:#La evaluación fue guardada con éxito.
 sco_current_scoring_form_input#:#Puntuación actual
 sco_new_scoring_form_input#:#Nueva puntuación
 sco_show_new_scoring_form_button#:#Mostrar comparación
@@ -428,6 +429,8 @@ sco_invalid_value#:#La puntuación que ha introducido no es válida para esta pr
 sco_prt_name#:# Nombre del árboles de respuestas potenciales:
 sco_prt_value#:#Puntuación máxima para este árboles de respuestas potenciales:
 sco_node_name#:#Nombre del nodo:
+sco_node_positive#:#Comparación positiva
+sco_node_negative#:#Comparación negativa
 message_answernote_part#:#Nota de respuesta
 exp_question_note#:#Nota de la pregunta
 exp_general_feedback#:#Retroalimentación general
