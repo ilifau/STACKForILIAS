@@ -712,3 +712,4 @@ ui_admin_configuration_defaults_feedback_styles_title#:#Estilos de retroalimenta
 ui_admin_configuration_defaults_feedback_styles_name#:#Nombre del estilo
 ui_admin_configuration_defaults_feedback_styles_style#:#Estilo
 input_must_verify_to_false#:#Como ha seleccionado que no se muestre verificación, se ha desmarcado la opción "Los estudiantes deben verificar".
+uninstall_not_supported#:#Los plugins de tipo pregunta no pueden ser desinstalados, para evitar errores trata de desactivarlo.
