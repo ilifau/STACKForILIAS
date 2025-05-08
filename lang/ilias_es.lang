@@ -428,7 +428,7 @@ sco_set_new_scoring_form_button#:#Guardar puntuación
 sco_invalid_value#:#La puntuación que ha introducido no es válida para esta pregunta.
 sco_prt_name#:# Nombre del árboles de respuestas potenciales:
 sco_prt_value#:#Puntuación máxima para este árboles de respuestas potenciales:
-sco_node_name#:#Nombre del nodo:
+sco_node_name#:#Nombre del nodo
 sco_node_positive#:#Comparación positiva
 sco_node_negative#:#Comparación negativa
 message_answernote_part#:#Nota de respuesta

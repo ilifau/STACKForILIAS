@@ -77,8 +77,19 @@ class ScoringUI
      */
     public function getScoringPanelUIComponent(): string
     {
+        global $DIC;
+
+        $DIC->ui()->mainTemplate()->addCss(
+            $this->plugin->getDirectory() . '/templates/css/scoring.css'
+        );
+
+        $DIC->ui()->mainTemplate()->addJavaScript(
+            $this->plugin->getDirectory() . '/templates/js/scoring.js'
+        );
+
         $form = $this->renderForm();
         $table = $this->prtTableRender();
+
         return $form . $table;
     }
 
@@ -155,7 +166,7 @@ class ScoringUI
                 $this->plugin->txt("sco_prt_value") . " <strong>" . ($prt->get_value() / $max_weight) * $this->question->getPoints() . " </strong><br>" .
                 $this->getTableHtml($prt, $max_weight, $this->questionPoints)
             ))->withViewControls(array(
-                new Expand(),
+                new Expand(true),
 
             ));
             $rendered .= $this->renderer->render($panel);

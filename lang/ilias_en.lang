@@ -427,9 +427,9 @@ sco_set_new_scoring_form_button#:#Save points
 sco_invalid_value#:#The value you entered as new points for this question is not valid.
 sco_prt_name#:# Potential response tree name:
 sco_prt_value#:#Maximum points for this Potential response tree:
-sco_node_name#:#Node name:
-sco_node_positive#:#Positive comparison:
-sco_node_negative#:#Negative comparison:
+sco_node_name#:#Node name
+sco_node_positive#:#Positive comparison
+sco_node_negative#:#Negative comparison
 message_answernote_part#:#Answer note
 exp_question_note#:#Question note
 exp_general_feedback#:#General feedback

@@ -41,7 +41,7 @@ class StackScoringTableData implements DataRetrieval
     private float $max_weight;
     private float $questionPoint;
 
-    public function __construct(stack_potentialresponse_tree_lite $prt_data, float $max_weight , float $questionPoint)
+    public function __construct(stack_potentialresponse_tree_lite $prt_data, float $max_weight, float $questionPoint)
     {
         $this->prt_data = $prt_data;
         $this->max_weight = $max_weight;
@@ -50,11 +50,11 @@ class StackScoringTableData implements DataRetrieval
 
     public function getRows(
         DataRowBuilder $row_builder,
-        ?array $visible_column_ids,
-        Range $range,
-        Order $order,
-        ?array $filter_data,
-        ?array $additional_parameters
+        ?array         $visible_column_ids,
+        Range          $range,
+        Order          $order,
+        ?array         $filter_data,
+        ?array         $additional_parameters
     ): Generator
     {
         $records_to_display = $this->getRecords();
@@ -83,8 +83,8 @@ class StackScoringTableData implements DataRetrieval
         foreach ($this->prt_data->get_nodes() as $node) {
             $records[] = [
                 'node_name' => $node->nodename,
-                'positive_comparison' => ($node->truescore * $prt_max_points),
-                'negative_comparison' => ($node->falsescore * $prt_max_points),
+                'positive_comparison' => '<span class="positiveComparison">' . $node->truescoremode . ($node->truescore * $prt_max_points) . '</span>',
+                'negative_comparison' => '<span class="negativeComparison">' . $node->falsescoremode . ($node->falsescore * $prt_max_points) . '</span>',
             ];
         }
 
