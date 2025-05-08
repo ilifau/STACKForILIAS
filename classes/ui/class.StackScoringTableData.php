@@ -26,31 +26,27 @@ namespace classes\ui;
 use Generator;
 use ILIAS\Data\Order;
 use ILIAS\Data\Range;
-use ILIAS\UI\Component\Table;
 use ILIAS\UI\Component\Table\DataRetrieval;
 use ILIAS\UI\Component\Table\DataRowBuilder;
-use ilassStackQuestionPlugin;
+use stack_potentialresponse_tree_lite;
 
 /**
- * ScoringUI
+ * StackScoringTableData
  *
- * @authors Jesús Copado Mejías, Saúl Díaz Díaz , Abraham Morales Rodríguez <stack@surlabs.es>
+ * @authors Jesús Copado Mejías, Saúl Díaz Díaz, Abraham Morales Rodríguez <stack@surlabs.es>
  */
 class StackScoringTableData implements DataRetrieval
 {
+    private stack_potentialresponse_tree_lite $prt_data;
+    private float $max_weight;
+    private float $questionPoint;
 
-    private ilassStackQuestionPlugin $plugin;
-
-    public function __construct( $prt_data, float $max_weight , float $questionPoint, ilassStackQuestionPlugin $plugin)
+    public function __construct(stack_potentialresponse_tree_lite $prt_data, float $max_weight , float $questionPoint)
     {
-        // TODO Tipar PRT
-
         $this->prt_data = $prt_data;
         $this->max_weight = $max_weight;
         $this->questionPoint = $questionPoint;
-        $this->plugin = $plugin;
     }
-
 
     public function getRows(
         DataRowBuilder $row_builder,
@@ -61,7 +57,7 @@ class StackScoringTableData implements DataRetrieval
         ?array $additional_parameters
     ): Generator
     {
-        $records_to_display = $this->getRecords($range, $order);
+        $records_to_display = $this->getRecords();
 
         foreach ($records_to_display as $record) {
 
@@ -75,27 +71,23 @@ class StackScoringTableData implements DataRetrieval
         ?array $additional_parameters
     ): ?int
     {
-        return count(array($this->prt_data));
+        return count($this->prt_data->get_nodes());
     }
 
-    protected function getRecords(
-        Range  $range,
-        Order  $order,
-    ): array
+    protected function getRecords(): array
     {
-        // Get all the node info from the PRTs
         $records = [];
         $prt_max_weight = $this->prt_data->get_value();
-        // TODO Check
         $prt_max_points = ($prt_max_weight / $this->max_weight) * $this->questionPoint;
 
         foreach ($this->prt_data->get_nodes() as $node) {
             $records[] = [
-                $this->plugin->txt("sco_node_name") => $node->nodename,
-                $this->plugin->txt("sco_node_positive") => ($node->truescore * $prt_max_points),
-                $this->plugin->txt("sco_node_negative") => ($node->falsescore * $prt_max_points),
+                'node_name' => $node->nodename,
+                'positive_comparison' => ($node->truescore * $prt_max_points),
+                'negative_comparison' => ($node->falsescore * $prt_max_points),
             ];
         }
+
         return $records;
     }
 }

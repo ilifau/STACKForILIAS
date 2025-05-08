@@ -25,7 +25,6 @@ namespace classes\ui\author;
 
 use assStackQuestion;
 use classes\ui\StackScoringTableData;
-use classes\ui\StackScoringTableGUI;
 use Expand;
 use ilCtrl;
 use ilCtrlException;
@@ -46,6 +45,7 @@ class ScoringUI
     private Renderer $renderer;
     private ilCtrl $control;
     private assStackQuestion $question;
+    private float $questionPoints;
     private $request;
 
     /**
@@ -53,6 +53,7 @@ class ScoringUI
      *
      * @param ilassStackQuestionPlugin $plugin
      * @param assStackQuestion $question The question object
+     * @param float $questionPoints
      */
     public function __construct(ilassStackQuestionPlugin $plugin, assStackQuestion $question, float $questionPoints)
     {
@@ -81,7 +82,6 @@ class ScoringUI
         return $form . $table;
     }
 
-
     /**
      * @throws ilCtrlException
      */
@@ -105,7 +105,6 @@ class ScoringUI
     /**
      * @throws ilCtrlException
      */
-
     public function buildForm(): Standard
     {
         $info = $this->plugin->txt("sco_current_scoring_info") . "<br>" . $this->plugin->txt('sco_info') . "</br>";
@@ -119,14 +118,12 @@ class ScoringUI
             [
                 "scoring" => $this->factory->input()->field()->section($inputs, $this->plugin->txt("sco_scoring_form")),
             ]
-
         );
     }
 
     /**
      * @throws ilCtrlException
      */
-
     public function save(array $result): void
     {
         global $DIC;
@@ -138,6 +135,11 @@ class ScoringUI
         $DIC->ctrl()->redirectByClass('assStackQuestionGUI', 'scoringManagementPanel');
     }
 
+    /**
+     * Creates the panel that contains the table with the output.
+     *
+     * @return string
+     */
     public function prtTableRender(): string
     {
         $rendered = '';
@@ -162,17 +164,24 @@ class ScoringUI
         return $rendered;
     }
 
+    /**
+     * Creates a table component for the nodes of each PRT with their information.
+     *
+     * @param $prt_data
+     * @param $max_weight
+     * @param $questionPoints
+     * @return string
+     */
     public function getTableHtml($prt_data , $max_weight , $questionPoints): string
     {
         $columns = [
             'node_name' => $this->factory->table()->column()->text($this->plugin->txt("sco_node_name"))->withIsSortable(false),
-            'positive_comparation' => $this->factory->table()->column()->number($this->plugin->txt("sco_node_positive"))->withIsSortable(false),
-            'negative_comparation' => $this->factory->table()->column()->number($this->plugin->txt("sco_node_negative"))->withIsSortable(false),
+            'positive_comparison' => $this->factory->table()->column()->text($this->plugin->txt("sco_node_positive"))->withIsSortable(false),
+            'negative_comparison' => $this->factory->table()->column()->text($this->plugin->txt("sco_node_negative"))->withIsSortable(false),
         ];
-        $data_provider = new StackScoringTableData($prt_data, $max_weight , $questionPoints, $this->plugin);
+        $data_provider = new StackScoringTableData($prt_data, $max_weight , $questionPoints);
+
         $table_component = $this->factory->table()->data('', $columns, $data_provider)->withRequest($this->request);
         return $this->renderer->render($table_component);
     }
-
-
 }
