@@ -19,6 +19,7 @@ use classes\platform\StackPlatform;
  *
  *  More information and source code are available at:
  *  https://github.com/surlabs/STACK
+ *  https://github.com/surlabs/STACK
  *
  *  If you need support, please contact the maintainer of this software at:
  *  stack@surlabs.es

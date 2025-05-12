@@ -423,6 +423,7 @@ edit_question#:#Frage bearbeiten
 sco_scoring#:#Bewertung
 sco_subtitle#:#Auf dieser Seite sehen Sie die Auswertungsstruktur der Frage, um die maximale Punktzahl zu verändern und die Punktevergabe zu überprüfen.
 sco_scoring_form#:#Bewertungs-Status
+sco_scoring_form_saved#:#Bewertung gespeichert
 sco_current_scoring_form_input#:#Aktuelle Punktzahl
 sco_new_scoring_form_input#:#Neue Punktzahl
 sco_show_new_scoring_form_button#:#Zeige Vergleich
@@ -430,7 +431,9 @@ sco_set_new_scoring_form_button#:#Punktzahl speichern
 sco_invalid_value#:#Die von Ihnen eingegebene Punktzahl ist für diese Frage nicht gültig.
 sco_prt_name#:# Name des Auswertungsbaums:
 sco_prt_value#:#Maximale Punktzahl für diesen Auswertungsbaum:
-sco_node_name#:#Knotenname:
+sco_node_name#:#Knotenname
+sco_node_positive#:#Positiver Vergleich
+sco_node_negative#:#Negativer Vergleich
 message_answernote_part#:#Antwort-Notiz
 exp_question_note#:#Fragen-Notiz
 exp_general_feedback#:#Allgemeines Feedback
