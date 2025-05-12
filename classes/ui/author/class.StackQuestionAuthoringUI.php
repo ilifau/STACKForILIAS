@@ -45,6 +45,7 @@ use ilTaxNodeAssignment;
 use ilTestQuestionPoolInvalidArgumentException;
 use stack_abstract_graph_svg_renderer;
 use stack_ans_test_controller;
+use stack_cas_security;
 use stack_exception;
 use stack_input;
 use stack_input_factory;
@@ -175,6 +176,15 @@ class StackQuestionAuthoringUI
         $this->question->setQuestion($basic["question"]);
 
         $this->question->question_variables = $basic["question_variables"];
+
+        if (empty($basic["question_note"])) {
+            foreach (stack_cas_security::get_all_with_feature('random') as $random) {
+                if (strpos($basic["question"], $random) !== false) {
+                    return $this->renderer->render($this->factory->messageBox()->failure($this->plugin->txt("error_no_question_note")));
+                }
+            }
+        }
+
         $this->question->question_note = $basic["question_note"];
         $this->question->specific_feedback = $basic["specific_feedback"];
 
