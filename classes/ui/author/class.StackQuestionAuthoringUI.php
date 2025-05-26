@@ -179,7 +179,7 @@ class StackQuestionAuthoringUI
 
         if (empty($basic["question_note"])) {
             foreach (stack_cas_security::get_all_with_feature('random') as $random) {
-                if (strpos($basic["question"], $random) !== false) {
+                if (strpos($basic["question_variables"], $random) !== false) {
                     return $this->renderer->render($this->factory->messageBox()->failure($this->plugin->txt("error_no_question_note")));
                 }
             }
