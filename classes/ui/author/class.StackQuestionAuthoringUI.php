@@ -436,11 +436,20 @@ class StackQuestionAuthoringUI
             "arccos" => $this->plugin->txt('options_inverse_trigonometric_arccos')
         ], $this->plugin->txt("options_inverse_trigonometric_info"))->withRequired(true)
             ->withValue($this->question->options->get_option("inversetrig"));
+
+        $logicSymbol = $this->question->options->get_option("logicsymbol");
+
+        if ($logicSymbol == "0" || $logicSymbol == 0) {
+            $logicSymbol = "lang";
+        } elseif ($logicSymbol == "1" || $logicSymbol == 1) {
+            $logicSymbol = "symbol";
+        }
+
         $inputs["logicsymbol"] = $this->factory->input()->field()->select($this->plugin->txt("options_logic_symbol"), [
             "lang" => $this->plugin->txt('options_logic_symbol_lang'),
             "symbol" => $this->plugin->txt('options_logic_symbol_symbol'),
         ], $this->plugin->txt("options_logic_symbol_info"))->withRequired(true)
-            ->withValue($this->question->options->get_option("logicsymbol"));
+            ->withValue($logicSymbol);
         $inputs["matrixparens"] = $this->factory->input()->field()->select($this->plugin->txt("options_matrix_parens"), [
             "[" => "[",
             "(" => "(",
