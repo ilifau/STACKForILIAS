@@ -3793,7 +3793,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
             $inputs_empty = true;
 
             foreach ($value2['inputs'] as $input) {
-                if (!empty($input['value'])) {
+                if (isset($input['value']) && $input['value'] !== '' && !(is_array($input['value']) && empty($input['value']))) {
                     $inputs_empty = false;
                     break;
                 }
