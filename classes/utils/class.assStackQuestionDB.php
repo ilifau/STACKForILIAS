@@ -82,9 +82,9 @@ class assStackQuestionDB
 			$options['sqrtsign'] = ((int)$row->sqrt_sign);
 			$options['complexno'] = ($row->complex_no);
 			$options['inversetrig'] = ($row->inverse_trig);
+            $options['logicsymbol'] = ($row->logic_symbol);
 			$options['matrixparens'] = ($row->matrix_parens);
 			$options['assumereal'] = ((int)$row->assume_real);
-			$options['logicsymbol'] = ((int)$row->logic_symbol);
 
 			return array('options' => $options, 'ilias_options' => $ilias_options);
 		} else {

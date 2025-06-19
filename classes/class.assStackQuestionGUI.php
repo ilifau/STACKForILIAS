@@ -27,6 +27,7 @@ use classes\platform\StackException;
 use classes\platform\StackPlatform;
 use classes\platform\StackUnitTest;
 use classes\ui\author\RandomisationAndSecurityUI;
+use classes\ui\author\ScoringUI;
 use classes\ui\author\StackQuestionAuthoringUI;
 
 
@@ -422,7 +423,7 @@ class assStackQuestionGUI extends assQuestionGUI
      */
     public function writePostData($always = FALSE): int
 	{
-        $authoring_ui = new StackQuestionAuthoringUI($this->plugin, $this->object);
+        $authoring_ui = new StackQuestionAuthoringUI($this->plugin, $this->object, $this);
 
         $authoring_ui->writePostData();
 
@@ -475,7 +476,7 @@ class assStackQuestionGUI extends assQuestionGUI
 
 		$this->getQuestionTemplate();
 
-		$authoring_gui = new StackQuestionAuthoringUI($this->plugin, $this->object);
+		$authoring_gui = new StackQuestionAuthoringUI($this->plugin, $this->object, $this);
 
         $this->tpl->setVariable("QUESTION_DATA", $authoring_gui->showAuthoringPanel());
 	}
@@ -997,33 +998,31 @@ class assStackQuestionGUI extends assQuestionGUI
         $this->randomisationAndSecurity();
 	}
 
-	/**
-	 * This function is called when scoring tab is activated.
-	 * Shows the evaluation structure of the question by potentialresponse tree and a simulation
-	 * of the value of each PRT in real points, in order to change it.
-	 * @param float $new_question_points
-	 */
-	public function scoringManagementPanel($new_question_points = '')
-	{
+    /**
+     * This function is called when scoring tab is activated.
+     * Shows the evaluation structure of the question by potentialresponse tree and a simulation
+     * of the value of each PRT in real points, in order to change it.
+     * @throws ilCtrlException
+     */
+    public function scoringManagementPanel(): void
+    {
 		global $DIC;
+
 		$tabs = $DIC->tabs();
 		if ($this->object->getSelfAssessmentEditingMode()) {
 			$this->getLearningModuleTabs();
 		}
+
 		//Set all parameters required
 		$tabs->activateTab('edit_properties');
 		$tabs->activateSubTab('scoring_management');
 		$this->getQuestionTemplate();
 
 		//Create GUI object
-		//$this->plugin->includeClass('GUI/question_authoring/class.assStackQuestionScoringGUI.php');
-		$scoring_gui = new assStackQuestionScoringGUI($this->plugin, $this->object, $this->object->getPoints());
-
-		//Add CSS
-		$DIC->globalScreen()->layout()->meta()->addCss($this->plugin->getStyleSheetLocation('css/qpl_xqcas_scoring_management.css'));
+		$scoring_gui = new ScoringUI($this->plugin, $this->object, $this->object->getPoints());
 
 		//Returns Deployed seeds form
-		$this->tpl->setVariable("QUESTION_DATA", $scoring_gui->showScoringPanel($new_question_points));
+		$this->tpl->setVariable("QUESTION_DATA", $scoring_gui->getScoringPanelUIComponent());
 	}
 
 	/**
@@ -1040,7 +1039,7 @@ class assStackQuestionGUI extends assQuestionGUI
 		}
 
 		//Show scoring panel with comparison
-		$this->scoringManagementPanel($new_question_points);
+		$this->scoringManagementPanel();
 	}
 
 	/**

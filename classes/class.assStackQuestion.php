@@ -19,6 +19,7 @@ use classes\platform\StackPlatform;
  *
  *  More information and source code are available at:
  *  https://github.com/surlabs/STACK
+ *  https://github.com/surlabs/STACK
  *
  *  If you need support, please contact the maintainer of this software at:
  *  stack@surlabs.es
@@ -1441,7 +1442,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
             } else if (!$this->hasRandomVariants()) {
                 // Randomisation not used.
                 $this->seed = 1;
-            } else if (!empty($this->deployed_seeds)) {
+            } else if (isset($this->deployed_seeds[$variant])) {
                 // Question has a fixed number of variants.
                 $this->seed = $this->deployed_seeds[$variant] + 0;
                 // Don't know why this is coming out as a string. + 0 converts to int.

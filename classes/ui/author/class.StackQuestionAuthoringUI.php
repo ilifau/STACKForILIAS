@@ -25,10 +25,12 @@ namespace classes\ui\author;
 
 use assStackQuestion;
 use assStackQuestionDB;
+use assStackQuestionGUI;
 use assStackQuestionUtils;
 use classes\platform\StackConfig;
 use Customizing\global\plugins\Modules\TestQuestionPool\Questions\assStackQuestion\classes\ui\Component\CustomFactory;
 use Customizing\global\plugins\Modules\TestQuestionPool\Questions\assStackQuestion\classes\ui\Component\Input\Field\ExpandableSection;
+use Customizing\global\plugins\Modules\TestQuestionPool\Questions\assStackQuestion\classes\ui\Component\Input\Field\TaxonomySelect;
 use ilAssQuestionLifecycle;
 use ilassStackQuestionPlugin;
 use ilCtrlException;
@@ -37,9 +39,13 @@ use ILIAS\UI\Component\Input\Container\Form\Standard as StandardForm;
 use ILIAS\UI\Factory;
 use ILIAS\UI\Renderer;
 use ilLanguage;
+use ilObject;
+use ilObjTaxonomy;
+use ilTaxNodeAssignment;
 use ilTestQuestionPoolInvalidArgumentException;
 use stack_abstract_graph_svg_renderer;
 use stack_ans_test_controller;
+use stack_cas_security;
 use stack_exception;
 use stack_input;
 use stack_input_factory;
@@ -57,6 +63,7 @@ class StackQuestionAuthoringUI
 {
     private ilassStackQuestionPlugin $plugin;
     private assStackQuestion $question;
+    private assStackQuestionGUI $parent;
     private ilCtrlInterface $ctrl;
     private Factory $factory;
     private CustomFactory $customFactory;
@@ -65,7 +72,7 @@ class StackQuestionAuthoringUI
     private $request;
     private array $feedback_format_options;
 
-    public function __construct(ilassStackQuestionPlugin $plugin, assStackQuestion $question)
+    public function __construct(ilassStackQuestionPlugin $plugin, assStackQuestion $question, assStackQuestionGUI $parent)
     {
         global $DIC;
 
@@ -73,6 +80,7 @@ class StackQuestionAuthoringUI
 
         $this->plugin = $plugin;
         $this->question = $question;
+        $this->parent = $parent;
 
         $this->ctrl = $DIC->ctrl();
         $this->factory = $DIC->ui()->factory();
@@ -94,6 +102,10 @@ class StackQuestionAuthoringUI
             "inputs" => $this->factory->input()->field()->section($this->buildInputsSection(), $this->plugin->txt("inputs")),
             "prt" => $this->customFactory->tabSection($this->buildPrtSection(), $this->plugin->txt("prts"))
         ];
+
+        if (!empty($this->parent->getTaxonomyIds())) {
+            $sections["taxonomies"] = $this->customFactory->expandableSection($this->buildTaxonomySection(), $this->lng->txt("qpl_qst_edit_form_taxonomy_section"));
+        }
 
         return $this->factory->input()->container()->form()->standard(
             $this->ctrl->getLinkTargetByClass("assStackQuestionGUI", "editQuestion"),
@@ -143,6 +155,7 @@ class StackQuestionAuthoringUI
     /**
      * @throws stack_exception
      * @throws ilTestQuestionPoolInvalidArgumentException
+     * @throws \ilTaxonomyException
      */
     private function save(array $result): ?string
     {
@@ -163,6 +176,15 @@ class StackQuestionAuthoringUI
         $this->question->setQuestion($basic["question"]);
 
         $this->question->question_variables = $basic["question_variables"];
+
+        if (empty($basic["question_note"])) {
+            foreach (stack_cas_security::get_all_with_feature('random') as $random) {
+                if (strpos($basic["question_variables"], $random) !== false) {
+                    return $this->renderer->render($this->factory->messageBox()->failure($this->plugin->txt("error_no_question_note")));
+                }
+            }
+        }
+
         $this->question->question_note = $basic["question_note"];
         $this->question->specific_feedback = $basic["specific_feedback"];
 
@@ -177,6 +199,7 @@ class StackQuestionAuthoringUI
             "sqrtsign" => $options["sqrtsign"] ? 1 : 0,
             "complexno" => $options["complexno"],
             "inversetrig" => $options["inversetrig"],
+            "logicsymbol" => $options["logicsymbol"],
             "matrixparens" => $options["matrixparens"]
         ));
 
@@ -302,6 +325,12 @@ class StackQuestionAuthoringUI
             }
         }
 
+        if (!empty($result["taxonomies"])) {
+            foreach ($result["taxonomies"] as $taxonomy_id => $nodes) {
+                TaxonomySelect::saveTaxonomySelect($this->question->getObjId(), $this->question->getId(), $taxonomy_id, $nodes);
+            }
+        }
+
         $this->question->saveToDb();
 
         return $this->renderer->render($this->factory->messageBox()->success($this->lng->txt('msg_obj_modified')));
@@ -407,6 +436,20 @@ class StackQuestionAuthoringUI
             "arccos" => $this->plugin->txt('options_inverse_trigonometric_arccos')
         ], $this->plugin->txt("options_inverse_trigonometric_info"))->withRequired(true)
             ->withValue($this->question->options->get_option("inversetrig"));
+
+        $logicSymbol = $this->question->options->get_option("logicsymbol");
+
+        if ($logicSymbol == "0" || $logicSymbol == 0) {
+            $logicSymbol = "lang";
+        } elseif ($logicSymbol == "1" || $logicSymbol == 1) {
+            $logicSymbol = "symbol";
+        }
+
+        $inputs["logicsymbol"] = $this->factory->input()->field()->select($this->plugin->txt("options_logic_symbol"), [
+            "lang" => $this->plugin->txt('options_logic_symbol_lang'),
+            "symbol" => $this->plugin->txt('options_logic_symbol_symbol'),
+        ], $this->plugin->txt("options_logic_symbol_info"))->withRequired(true)
+            ->withValue($logicSymbol);
         $inputs["matrixparens"] = $this->factory->input()->field()->select($this->plugin->txt("options_matrix_parens"), [
             "[" => "[",
             "(" => "(",
@@ -925,5 +968,34 @@ class StackQuestionAuthoringUI
         }
 
         return "";
+    }
+
+    /**
+     * @throws \ilTaxonomyException
+     */
+    private function buildTaxonomySection(): array
+    {
+        $taxonomies = [];
+
+        foreach ($this->parent->getTaxonomyIds() as $taxonomyId) {
+            $taxonomy = new ilObjTaxonomy($taxonomyId);
+
+            $taxonomies[$taxonomyId] = $this->customFactory->taxonomySelect($taxonomy);
+
+            $tax_node_ass = new ilTaxNodeAssignment(ilObject::_lookupType($this->question->getObjId()), $this->question->getObjId(), 'quest', $taxonomyId);
+            $current_ass = $tax_node_ass->getAssignmentsOfItem($this->question->getId());
+
+            if (!empty($current_ass)) {
+                $value = [];
+
+                foreach ($current_ass as $ca) {
+                    $value[] = (int) $ca["node_id"];
+                }
+
+                $taxonomies[$taxonomyId] = $taxonomies[$taxonomyId]->withValue($value);
+            }
+        }
+
+        return $taxonomies;
     }
 }
