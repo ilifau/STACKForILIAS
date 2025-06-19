@@ -257,7 +257,7 @@ class assStackQuestionGUI extends assQuestionGUI
         $display_options = [];
         $display_options['readonly'] = true;
         $display_options['show_correct_solution'] = $show_correct_solution;
-        $display_options['feedback'] = true;
+        $display_options['feedback'] = $show_feedback;
 
         //Render question (and general feedback if solution)
         $question = assStackQuestionUtils::_getLatex(StackRenderIlias::renderQuestion($attempt_data, $display_options));
@@ -266,7 +266,7 @@ class assStackQuestionGUI extends assQuestionGUI
             global $DIC;
             $question .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->divider()->horizontal());
             $question .= assStackQuestionUtils::_getLatex(StackRenderIlias::renderGeneralFeedback($attempt_data, $display_options));
-        } else {
+        } else if ($display_options['feedback']) {
             $question .= assStackQuestionUtils::_getLatex(StackRenderIlias::renderSpecificFeedback($attempt_data, $display_options));
         }
 
