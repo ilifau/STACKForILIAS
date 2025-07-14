@@ -150,14 +150,13 @@ ui_admin_configuration_defaults_section_title_healthcheck_healthcheckplots#:#Fun
 ui_admin_configuration_defaults_section_title_healthcheck_healthchecksstackmaximaversion#:#Funktionstest Stack Maxima-Version
 ui_admin_configuration_defaults_section_title_healthcheck_healthchecksstacklibrariesworking#:#Funktionstest Stack Bibliotheken funktionieren
 ui_admin_configuration_quality_healthcheck_button_label#:#Funktionstest durchführen
-ui_admin_configuration_quality_check_prts_button_label#:#Überprüfen Sie PRT-Platzhalter
-ui_admin_configuration_quality_check_prt_no_prts#:#Die STACK-Frage mit der ID %s hat keine PRT, daher wird ihre Bewertung immer 0 sein.
+ui_admin_configuration_quality_check_prt_placeholders_button_label#:#Überprüfen Sie PRT-Platzhalter
+ui_admin_configuration_quality_check_prt_placeholders_no_prts#:#Die STACK-Frage mit der ID %s hat keine PRT, daher wird ihre Bewertung immer 0 sein.
 ui_admin_configuration_quality_check_prt_placeholders_missing_placeholders#:#Die STACK-Frage mit der ID %s hat folgende PRTs mit fehlenden Platzhaltern: (%s)
-ui_admin_configuration_quality_check_bad_name#:#Die STACK-Frage mit der ID %s hat die folgenden PRTs mit schlechtem Namen: (%s)
-ui_admin_configuration_quality_check_prt_comma_errors#:#Die STACK-Frage mit der ID %s hat die folgenden PRTs, die Komma-Fehler enthalten:
+ui_admin_configuration_quality_check_prt_placeholders_bad_name#:#Die STACK-Frage mit der ID %s hat die folgenden PRTs mit schlechtem Namen: (%s)
 ui_admin_configuration_quality_check_prt_placeholders_fixed#:#Die fehlenden Platzhalter wurden hinzugefügt.
 ui_admin_configuration_quality_check_prt_names_fixed#:#Die schlechten Namen wurden korrigiert.
-ui_admin_configuration_quality_check_prts_all_ok#:#Alle PRTs haben Platzhalter.
+ui_admin_configuration_quality_check_prt_placeholders_all_ok#:#Alle PRTs haben Platzhalter.
 ui_admin_configuration_quality_healthcheck_mbstring_true#:#Die PHP mbstring-Erweiterung ist installiert und aktiviert
 ui_admin_configuration_quality_healthcheck_mbstring_false#:#STACK benötigt die PHP mbstring-Erweiterung, und sie ist nicht auf dem Server installiert, auf dem ILIAS läuft. STACK-Fragen funktionieren möglicherweise nicht ordnungsgemäß, bis dies installiert ist.
 ui_author_main_title#:#STACK Fragenautor
@@ -225,7 +224,7 @@ ui_author_randomisation_cannot_delete_active_variant#:#Sie können die aktive Va
 ui_author_randomisation_sucessfully_on_seeds_generation#:#Seeds wurden erfolgreich generiert
 ui_author_randomisation_failed_on_seeds_generation#:#Fehlgeschlagen bei der Generierung von Seeds
 ui_author_randomisation_no_test_case_selected#:#Kein Testfall ausgewählt
-ui_author_randomisation_quality_assurance_label#:#Qualitätssicherung
+ui_author_randomisation_ckeck_prt_placeholders_button_label#:#PRT-Platzhalter für Fragenpool/Test prüfen
 assStackQuestion#:#STACK Frage
 question_imported_successfully#:#Die Frage(n) wurde(n) erfolgreich importiert.
 error_importing_question#:#Beim Import trat ein Fehler auf.
@@ -717,5 +716,3 @@ ui_admin_configuration_defaults_feedback_styles_name#:#Style name
 ui_admin_configuration_defaults_feedback_styles_style#:#Style
 input_must_verify_to_false#:#Da Sie ausgewählt haben, dass keine Überprüfung angezeigt werden soll, wurde die Option "Schüler müssen überprüfen" abgewählt.
 uninstall_not_supported#:#Frage-Plugins können nicht deinstalliert werden. Um Fehler zu vermeiden, versuchen Sie, sie zu deaktivieren.
-ui_admin_configuration_quality_check_prt_comma_error#:#:#Der PRT <strong>%s</strong> -> Knoten <strong>%s</strong> hat ein Komma in <strong>%s</strong> und der Wert muss geändert werden (Von <strong>%s</strong> zu <strong>%s</strong>).
-ui_admin_configuration_quality_check_prt_comma_errors_fixed#:#Die folgenden Fragen wurden korrigiert

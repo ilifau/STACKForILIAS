@@ -25,16 +25,16 @@ use stack_utils;
  *
  *********************************************************************/
 
-class StackCheckPrt {
+class StackCheckPrtPlaceholders {
 
     /**
-     * Get errors from the prts of the questions
+     * Get the missing placeholders for a given question and errors in prt name
      * @param array|null $questions
      * @return array
      */
     public static function getErrors(?array $questions = null) :array {
         $placeholders = [];
-        $errors = [];
+        $missing = [];
 
         if (isset($questions) && !empty($questions)) {
             foreach ($questions as $question) {
@@ -49,41 +49,23 @@ class StackCheckPrt {
                 foreach ($data["prts"] as $prt) {
                     if (isset($data["question_text"]) && isset($data["specific_feedback"])) {
                         if (strpos($data["question_text"], "[[feedback:" . $prt . "]]") === false && strpos($data["specific_feedback"], "[[feedback:" . $prt . "]]") === false) {
-                            $errors[$question_id]["title"] = $data["title"];
-                            $errors[$question_id]["missing_placeholders"][] = $prt;
+                            $missing[$question_id]["title"] = $data["title"];
+                            $missing[$question_id]["missing"][] = $prt;
                         } else if (!stack_utils::is_valid_name($prt) && is_numeric($prt)) {
-                            $errors[$question_id]["title"] = $data["title"];
-                            $errors[$question_id]["badname"][] = $prt;
+                            $missing[$question_id]["title"] = $data["title"];
+                            $missing[$question_id]["badname"][] = $prt;
                         }
                     }
                 }
+            } else {
+                $missing[$question_id] = array(
+                    "title" => $data["title"],
+                    "missing" => []
+                );
             }
         }
 
-        $comma_errors = assStackQuestionDB::getPrtNodesWithComma();
-
-        foreach ($comma_errors as $question_id => $data) {
-            if (!empty($data["prts"])) {
-                foreach ($data["prts"] as $prt => $node) {
-                    foreach ($node as $node_name => $node_data) {
-                        foreach ($node_data as $key => $value) {
-                            if (strpos($value, ",") !== false) {
-                                $errors[$question_id]["title"] = $data["title"];
-                                $errors[$question_id]["comma_errors"][] = [
-                                    "prt" => $prt,
-                                    "node" => $node_name,
-                                    "key" => $key,
-                                    "value" => $value,
-                                    "fixed_value" => (float) str_replace(",", ".", $value)
-                                ];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $errors;
+        return $missing;
     }
 
     /**
@@ -91,7 +73,7 @@ class StackCheckPrt {
      * @param string $question_id
      * @return array
      */
-    public static function fixMissingPlaceholders(string $question_id) :array {
+    public static function fixMissings(string $question_id) :array {
         $data = assStackQuestionDB::getPrtsAndPlaceholders($question_id);
 
         if (isset($data) && !empty($data)) {
@@ -150,36 +132,6 @@ class StackCheckPrt {
                         assStackQuestionDB::updatePrtName($question_id, $prt, $new_prt);
 
                         $changed = $prt . " -> " . $new_prt . "\n";
-                    }
-                }
-            }
-        }
-
-        return array(
-            "title" => $data["title"],
-            "changed" => $changed,
-        );
-    }
-
-    public static function fixCommaErrors(string $question_id)
-    {
-        $data = assStackQuestionDB::getPrtNodesWithComma($question_id);
-
-        $changed = "";
-
-        if (!empty($data)) {
-            if (!empty($data["prts"])) {
-                foreach ($data["prts"] as $prt => $node) {
-                    foreach ($node as $node_name => $node_data) {
-                        foreach ($node_data as $key => $value) {
-                            if (strpos($value, ",") !== false) {
-                                $fixed_value = (float) str_replace(",", ".", $value);
-
-                                assStackQuestionDB::updatePrtNodeValue($question_id, (string) $prt, (string) $node_name, (string) $key, $fixed_value);
-
-                                $changed .= $prt . " -> " . $node_name . " -> " . $key . ": " . $value . " -> " . $fixed_value . "<br>";
-                            }
-                        }
                     }
                 }
             }
