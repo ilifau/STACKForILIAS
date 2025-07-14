@@ -146,13 +146,14 @@ ui_admin_configuration_defaults_section_title_healthcheck_healthcheckplots#:#Hea
 ui_admin_configuration_defaults_section_title_healthcheck_healthchecksstackmaximaversion#:#Health Checks Stack Maxima version
 ui_admin_configuration_defaults_section_title_healthcheck_healthchecksstacklibrariesworking#:#Health Checks Stack libraries working
 ui_admin_configuration_quality_healthcheck_button_label#:#Do Health Check
-ui_admin_configuration_quality_check_prt_placeholders_button_label#:#Check PRT placeholders
-ui_admin_configuration_quality_check_prt_placeholders_no_prts#:#The STACK question with ID %s does not have any PRT so its evaluation will always be 0
+ui_admin_configuration_quality_check_prts_button_label#:#Check PRTs
+ui_admin_configuration_quality_check_prt_no_prts#:#The STACK question with ID %s does not have any PRT so its evaluation will always be 0
 ui_admin_configuration_quality_check_prt_placeholders_missing_placeholders#:#The STACK question with ID %s has the following missing PRT placeholders: (%s)
-ui_admin_configuration_quality_check_prt_placeholders_bad_name#:#The STACK question with ID %s has the following PRTs with bad name: (%s)
+ui_admin_configuration_quality_check_bad_name#:#The STACK question with ID %s has the following PRTs with bad name: (%s)
+ui_admin_configuration_quality_check_prt_comma_errors#:#The STACK question with ID %s has the following PRTs with comma errors:
 ui_admin_configuration_quality_check_prt_placeholders_fixed#:#The missing PRT placeholders have been fixed
 ui_admin_configuration_quality_check_prt_names_fixed#:#The bad PRT names have been fixed
-ui_admin_configuration_quality_check_prt_placeholders_all_ok#:#All PRT placeholders are OK
+ui_admin_configuration_quality_check_prts_all_ok#:#All PRTs are OK
 ui_admin_configuration_quality_healthcheck_mbstring_true#:#The PHP mbstring extension is installed and enabled
 ui_admin_configuration_quality_healthcheck_mbstring_false#:#STACK requires the PHP mbstring extension to be used, and it is not installed on the Server where ILIAS is running. STACK questions might not work properly until this is installed.
 ui_author_main_title#:#STACK Question Authoring
@@ -219,7 +220,7 @@ ui_author_randomisation_cannot_delete_active_variant#:#You cannot delete the act
 ui_author_randomisation_sucessfully_on_seeds_generation#:#Seeds were successfully generated
 ui_author_randomisation_failed_on_seeds_generation#:#Failed on seeds generation
 ui_author_randomisation_no_test_case_selected#:#No test case selected
-ui_author_randomisation_ckeck_prt_placeholders_button_label#:#Check PRT placeholders for question pool/test
+ui_author_randomisation_quality_assurance_label#:#Quality assurance
 assStackQuestion#:#STACK Question
 question_imported_successfully#:#Question was imported successfully
 error_importing_question#:#Error importing question
@@ -710,3 +711,5 @@ ui_admin_configuration_defaults_feedback_styles_name#:#Style name
 ui_admin_configuration_defaults_feedback_styles_style#:#Style
 input_must_verify_to_false#:#Since you have selected not to show validation, the "Student must verify" option has been deselected.
 uninstall_not_supported#:#Question plugins cannot be uninstalled, to avoid errors try to deactivate it.
+ui_admin_configuration_quality_check_prt_comma_error#:#The PRT <strong>%s</strong> -> Node <strong>%s</strong> has a comma in <strong>%s</strong> and the value must be changed (From <strong>%s</strong> to <strong>%s</strong>).
+ui_admin_configuration_quality_check_prt_comma_errors_fixed#:#The following questions have been fixed:
