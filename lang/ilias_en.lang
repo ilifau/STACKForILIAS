@@ -713,3 +713,6 @@ input_must_verify_to_false#:#Since you have selected not to show validation, the
 uninstall_not_supported#:#Question plugins cannot be uninstalled, to avoid errors try to deactivate it.
 ui_admin_configuration_quality_check_prt_comma_error#:#The PRT <strong>%s</strong> -> Node <strong>%s</strong> has a comma in <strong>%s</strong> and the value must be changed (From <strong>%s</strong> to <strong>%s</strong>).
 ui_admin_configuration_quality_check_prt_comma_errors_fixed#:#The following questions have been fixed:
+ui_admin_configuration_quality_check_prt_comma_errors_fixed_count#:#Comma errors fixed:
+fix#:#Fix
+fix_all_comma_errors#:#Fix all comma errors

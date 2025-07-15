@@ -1654,7 +1654,7 @@ class assStackQuestionGUI extends assQuestionGUI
                 $pane = '<div style="display: flex; width: 100%; justify-content: space-between;">';
                 $pane .= sprintf($DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_prt_placeholders_missing_placeholders'), $question_id, implode(', ', $error["missing_placeholders"]));
                 $this->ctrl->setParameterByClass("assStackQuestionGUI", "question_id", $question_id);
-                $pane .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->button()->standard("Fix", $this->ctrl->getLinkTargetByClass("assStackQuestionGUI", "fixPrtPlaceholders")));
+                $pane .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->button()->standard($DIC->language()->txt("qpl_qst_xqcas_fix"), $this->ctrl->getLinkTargetByClass("assStackQuestionGUI", "fixPrtPlaceholders")));
                 $pane .= '</div>';
                 $pane .= '<br><strong>Title: </strong>' . $error["title"];
 
@@ -1667,7 +1667,7 @@ class assStackQuestionGUI extends assQuestionGUI
                 $pane = '<div style="display: flex; width: 100%; justify-content: space-between;">';
                 $pane .= sprintf($DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_bad_name'), $question_id, implode(', ', $error["badname"]));
                 $this->ctrl->setParameterByClass("assStackQuestionGUI", "question_id", $question_id);
-                $pane .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->button()->standard("Fix", $this->ctrl->getLinkTargetByClass("assStackQuestionGUI", "fixPrtName")));
+                $pane .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->button()->standard($DIC->language()->txt("qpl_qst_xqcas_fix"), $this->ctrl->getLinkTargetByClass("assStackQuestionGUI", "fixPrtName")));
                 $pane .= '</div>';
                 $pane .= '<br><strong>Title: </strong>' . $error["title"];
 
@@ -1680,7 +1680,7 @@ class assStackQuestionGUI extends assQuestionGUI
                 $pane = '<div style="display: flex; width: 100%; justify-content: space-between;">';
                 $pane .= sprintf($DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_prt_comma_errors'), $question_id);
                 $this->ctrl->setParameterByClass("ilassStackQuestionConfigGUI", "question_id", $question_id);
-                $pane .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->button()->standard("Fix", $this->ctrl->getLinkTargetByClass("assStackQuestionGUI", "fixPrtCommaErrors")));
+                $pane .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->button()->standard($DIC->language()->txt("qpl_qst_xqcas_fix"), $this->ctrl->getLinkTargetByClass("assStackQuestionGUI", "fixPrtCommaErrors")));
                 $pane .= '</div>';
 
                 foreach ($error["comma_errors"] as $comma_error) {

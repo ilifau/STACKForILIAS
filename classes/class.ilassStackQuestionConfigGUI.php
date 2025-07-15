@@ -133,6 +133,7 @@ class ilassStackQuestionConfigGUI extends ilPluginConfigGUI
                 break;
             case "checkPrts":
                 $rendered = "";
+                $comma_count = 0;
 
                 foreach (StackCheckPrt::getErrors() as $question_id => $error) {
                     $no_prts = true;
@@ -143,7 +144,7 @@ class ilassStackQuestionConfigGUI extends ilPluginConfigGUI
                         $pane = '<div style="display: flex; width: 100%; justify-content: space-between;">';
                         $pane .= sprintf($DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_prt_placeholders_missing_placeholders'), $question_id, implode(', ', $error["missing_placeholders"]));
                         $this->ctrl->setParameterByClass("ilassStackQuestionConfigGUI", "question_id", $question_id);
-                        $pane .= $this->renderer->render($this->factory->button()->standard("Fix", $this->ctrl->getLinkTargetByClass("ilassStackQuestionConfigGUI", "fixPrtPlaceholders")));
+                        $pane .= $this->renderer->render($this->factory->button()->standard($DIC->language()->txt("qpl_qst_xqcas_fix"), $this->ctrl->getLinkTargetByClass("ilassStackQuestionConfigGUI", "fixPrtPlaceholders")));
                         $pane .= '</div>';
                         $pane .= '<br><strong>Title: </strong>' . $error["title"];
 
@@ -156,7 +157,7 @@ class ilassStackQuestionConfigGUI extends ilPluginConfigGUI
                         $pane = '<div style="display: flex; width: 100%; justify-content: space-between;">';
                         $pane .= sprintf($DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_bad_name'), $question_id, implode(', ', $error["badname"]));
                         $this->ctrl->setParameterByClass("ilassStackQuestionConfigGUI", "question_id", $question_id);
-                        $pane .= $this->renderer->render($DIC->ui()->factory()->button()->standard("Fix", $this->ctrl->getLinkTargetByClass("ilassStackQuestionConfigGUI", "fixPrtName")));
+                        $pane .= $this->renderer->render($DIC->ui()->factory()->button()->standard($DIC->language()->txt("qpl_qst_xqcas_fix"), $this->ctrl->getLinkTargetByClass("ilassStackQuestionConfigGUI", "fixPrtName")));
                         $pane .= '</div>';
                         $pane .= '<br><strong>Title: </strong>' . $error["title"];
 
@@ -169,7 +170,7 @@ class ilassStackQuestionConfigGUI extends ilPluginConfigGUI
                         $pane = '<div style="display: flex; width: 100%; justify-content: space-between;">';
                         $pane .= sprintf($DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_prt_comma_errors'), $question_id);
                         $this->ctrl->setParameterByClass("ilassStackQuestionConfigGUI", "question_id", $question_id);
-                        $pane .= $this->renderer->render($DIC->ui()->factory()->button()->standard("Fix", $this->ctrl->getLinkTargetByClass("ilassStackQuestionConfigGUI", "fixPrtCommaErrors")));
+                        $pane .= $this->renderer->render($DIC->ui()->factory()->button()->standard($DIC->language()->txt("qpl_qst_xqcas_fix"), $this->ctrl->getLinkTargetByClass("ilassStackQuestionConfigGUI", "fixPrtCommaErrors")));
                         $pane .= '</div>';
 
                         foreach ($error["comma_errors"] as $comma_error) {
@@ -178,6 +179,8 @@ class ilassStackQuestionConfigGUI extends ilPluginConfigGUI
                         }
 
                         $pane .= '<br><strong>Title: </strong>' . $error["title"];
+
+                        $comma_count++;
 
                         $rendered .= $DIC->ui()->renderer()->render($DIC->ui()->factory()->messageBox()->confirmation($pane));
                     }
@@ -192,6 +195,12 @@ class ilassStackQuestionConfigGUI extends ilPluginConfigGUI
 
                 if ($rendered == "") {
                     $rendered = $this->renderer->render($this->factory->messageBox()->success($DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_prts_all_ok')));
+                }
+
+                if ($comma_count > 1) {
+                    $bulky_comma = $this->renderer->render($DIC->ui()->factory()->button()->standard($DIC->language()->txt("qpl_qst_xqcas_fix_all_comma_errors"), $this->ctrl->getLinkTargetByClass("ilassStackQuestionConfigGUI", "fixCommaErrorsBulky")));
+
+                    $rendered = $bulky_comma . "<br><br>" . $rendered;
                 }
 
                 break;
@@ -222,6 +231,15 @@ class ilassStackQuestionConfigGUI extends ilPluginConfigGUI
                 $rendered .= "<br><strong>Title: </strong><br>" . $result["title"];
                 $rendered .= "<br><br>" . $result["changed"];
 
+                $rendered = $DIC->ui()->renderer()->render($DIC->ui()->factory()->messageBox()->success($rendered));
+
+                break;
+            case "fixCommaErrorsBulky":
+                $result = StackCheckPrt::fixCommaErrorsBulky();
+
+                $rendered = "<h2>" . $DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_prt_comma_errors_fixed') . "</h2>";
+                $rendered .= "<br><strong>" . $DIC->language()->txt('qpl_qst_xqcas_ui_admin_configuration_quality_check_prt_comma_errors_fixed_count') . "</strong> " . $result["fixed_count"];
+                $rendered .= "<br><br>" . $result["changed"];
                 $rendered = $DIC->ui()->renderer()->render($DIC->ui()->factory()->messageBox()->success($rendered));
 
                 break;

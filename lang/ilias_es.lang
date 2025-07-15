@@ -716,3 +716,6 @@ input_must_verify_to_false#:#Como ha seleccionado que no se muestre verificació
 uninstall_not_supported#:#Los plugins de tipo pregunta no pueden ser desinstalados, para evitar errores trata de desactivarlo.
 ui_admin_configuration_quality_check_prt_comma_error#:#El PRT <strong>%s</strong> -> Nodo <strong>%s</strong> tiene una coma en <strong>%s</strong> y el valor debe ser cambiado (De <strong>%s</strong> a <strong>%s</strong>).
 ui_admin_configuration_quality_check_prt_comma_errors_fixed#:#Se han corregido las siguientes preguntas con errores de coma en los PRT:
+ui_admin_configuration_quality_check_prt_comma_errors_fixed_count#:#Errores de coma corregidos:
+fix#:#Corregir
+fix_all_comma_errors#:#Corregir todos los errores de coma

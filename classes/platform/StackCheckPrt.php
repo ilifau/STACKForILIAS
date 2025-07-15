@@ -190,4 +190,39 @@ class StackCheckPrt {
             "changed" => $changed,
         );
     }
+
+    public static function fixCommaErrorsBulky()
+    {
+        $data = assStackQuestionDB::getPrtNodesWithComma();
+
+        $changed = "";
+        $fixed_count = 0;
+
+        if (!empty($data)) {
+            foreach ($data as $question_id => $question_data) {
+                if (!empty($question_data["prts"])) {
+                    foreach ($question_data["prts"] as $prt => $node) {
+                        foreach ($node as $node_name => $node_data) {
+                            foreach ($node_data as $key => $value) {
+                                if (strpos($value, ",") !== false) {
+                                    $fixed_value = (float) str_replace(",", ".", $value);
+
+                                    assStackQuestionDB::updatePrtNodeValue((string) $question_id, (string) $prt, (string) $node_name, (string) $key, $fixed_value);
+
+                                    $fixed_count++;
+
+                                    $changed .= "Question ID: " . $question_id . " - " . $prt . " -> " . $node_name . " -> " . $key . ": " . $value . " -> " . $fixed_value . "<br>";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return array(
+            "changed" => $changed,
+            "fixed_count" => $fixed_count
+        );
+    }
 }

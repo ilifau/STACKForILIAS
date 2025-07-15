@@ -719,3 +719,6 @@ input_must_verify_to_false#:#Da Sie ausgewählt haben, dass keine Überprüfung 
 uninstall_not_supported#:#Frage-Plugins können nicht deinstalliert werden. Um Fehler zu vermeiden, versuchen Sie, sie zu deaktivieren.
 ui_admin_configuration_quality_check_prt_comma_error#:#:#Der PRT <strong>%s</strong> -> Knoten <strong>%s</strong> hat ein Komma in <strong>%s</strong> und der Wert muss geändert werden (Von <strong>%s</strong> zu <strong>%s</strong>).
 ui_admin_configuration_quality_check_prt_comma_errors_fixed#:#Die folgenden Fragen wurden korrigiert
+ui_admin_configuration_quality_check_prt_comma_errors_fixed_count#:#Kommafehler korrigiert:
+fix#:#Korrigieren
+fix_all_comma_errors#:#Alle Kommafehler korrigieren
