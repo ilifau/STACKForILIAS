@@ -74,7 +74,7 @@ class StackCheckPrt {
                                     "node" => $node_name,
                                     "key" => $key,
                                     "value" => $value,
-                                    "fixed_value" => (float) str_replace(",", ".", $value)
+                                    "fixed_value" => (float) preg_replace('/\.{2,}/', '.', str_replace(",", ".", $value))
                                 ];
                             }
                         }
@@ -173,7 +173,7 @@ class StackCheckPrt {
                     foreach ($node as $node_name => $node_data) {
                         foreach ($node_data as $key => $value) {
                             if (strpos($value, ",") !== false) {
-                                $fixed_value = (float) str_replace(",", ".", $value);
+                                $fixed_value = (float) preg_replace('/\.{2,}/', '.', str_replace(",", ".", $value));
 
                                 assStackQuestionDB::updatePrtNodeValue($question_id, (string) $prt, (string) $node_name, (string) $key, $fixed_value);
 
@@ -205,7 +205,7 @@ class StackCheckPrt {
                         foreach ($node as $node_name => $node_data) {
                             foreach ($node_data as $key => $value) {
                                 if (strpos($value, ",") !== false) {
-                                    $fixed_value = (float) str_replace(",", ".", $value);
+                                    $fixed_value = (float) preg_replace('/\.{2,}/', '.', str_replace(",", ".", $value));
 
                                     assStackQuestionDB::updatePrtNodeValue((string) $question_id, (string) $prt, (string) $node_name, (string) $key, $fixed_value);
 
