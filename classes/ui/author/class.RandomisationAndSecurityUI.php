@@ -671,7 +671,7 @@ class RandomisationAndSecurityUI
             $form = $form->withRequest($request);
             $result = $form->getData();
             if ($result) {
-                $saving_info = $this->saveUnitTest($_GET["test_case"], $result, $question);
+                $saving_info = $this->saveUnitTest($_GET["test_case"] ?? null, $result, $question);
             }
         }
 
