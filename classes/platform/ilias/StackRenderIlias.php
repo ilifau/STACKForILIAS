@@ -145,6 +145,7 @@ class StackRenderIlias extends StackRender
         }
 
         $show_correct_solution = $display_options['show_correct_solution'] ?? false;
+        $readonly = $display_options['readonly'] ?? false;
 
         $instant_validation = StackConfig::getAll()["instant_validation"];
 
@@ -202,7 +203,7 @@ class StackRenderIlias extends StackRender
                     !is_a($input, 'stack_checkbox_input') &&
                     !is_a($input, 'stack_boolean_input')
                 ) {
-                    if (!$instant_validation && !$show_correct_solution) {
+                    if (!$instant_validation && !$show_correct_solution && !$readonly) {
                         $validation_button = self::_renderValidationButton((int)$question->getId(), $input_name);
                     }
                     $validation_rendered = $response[$input_name . '_validation'] ?? '';
@@ -213,7 +214,7 @@ class StackRenderIlias extends StackRender
             $state = $question->getInputState($input_name, $response);
 
             $question_text = str_replace("[[input:$input_name]]",
-                $input->render($state, $field_name, $show_correct_solution, $teacher_answer_value)." ".$validation_button,
+                $input->render($state, $field_name, $show_correct_solution || $readonly, $teacher_answer_value)." ".$validation_button,
                 $question_text);
 
             $ilias_validation = "";
