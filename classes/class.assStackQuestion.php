@@ -3793,10 +3793,12 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
             $value2 = json_decode($row['value2'], true);
             $inputs_empty = true;
 
-            foreach ($value2['inputs'] as $input) {
-                if (isset($input['value']) && $input['value'] !== '' && !(is_array($input['value']) && empty($input['value']))) {
-                    $inputs_empty = false;
-                    break;
+            if (isset($value2['inputs'])) {
+                foreach ($value2['inputs'] as $input) {
+                    if (isset($input['value']) && $input['value'] !== '' && !(is_array($input['value']) && empty($input['value']))) {
+                        $inputs_empty = false;
+                        break;
+                    }
                 }
             }
 
