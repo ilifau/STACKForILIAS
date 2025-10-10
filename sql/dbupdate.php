@@ -1229,7 +1229,31 @@ $db->query("DELETE FROM xqcas_configuration WHERE group_name = 'feedback'");
 ?>
 <#58>
 <?php
-global $DIC;
-$db = $DIC->database();
-$db->manipulate("ALTER TABLE xqcas_options MODIFY question_note TEXT NOT NULL");
+    global $DIC;
+    $db = $DIC->database();
+
+    if ($db->tableColumnExists('xqcas_options', 'question_note')) {
+        $db->modifyTableColumn(
+            'xqcas_options',
+            'question_note',
+            array(
+                'length' => 4000
+            )
+        );
+    }
+?>
+<#59>
+<?php
+    global $DIC;
+    $db = $DIC->database();
+
+    if ($db->tableColumnExists('xqcas_options', 'question_note')) {
+        $db->modifyTableColumn(
+            "xqcas_options",
+            "question_note",
+            array(
+                    "notnull" => false
+            )
+        );
+    }
 ?>
