@@ -54,8 +54,6 @@ git checkout ilias9_stack
 3. STACK uses the ILIAS composer autoloader functionality so, after installing or update the plugin, ensure you run on the ILIAS root folder
 ```bash
 composer install --no-dev
-npm install
-php setup/setup.php update
 ```
 ***
 **Please ensure you don't ignore plugins on composer.json**
