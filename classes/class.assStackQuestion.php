@@ -3722,6 +3722,7 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
 
         // Question inputs
         if (!empty($solutions["inputs"])) {
+            ksort($solutions["inputs"]);
             foreach ($solutions["inputs"] as $input_name => $input) {
                 $worksheet->setCell($startrow, 0, "Input " . $input_name . " value: ");
                 $worksheet->setCell($startrow, 1, $input["value"] ?? "");
@@ -3732,15 +3733,16 @@ class assStackQuestion extends assQuestion implements iQuestionCondition, ilObjQ
         }
 
         // Question prts
-        if (!empty($solutions["prts"])) {
-            foreach ($solutions["prts"] as $prt_name => $prt) {
-                $worksheet->setCell($startrow, 0, "Prt " . $prt_name . " points: ");
-                $worksheet->setCell($startrow, 1, $prt["points"] ?? 0);
-
-                // Next line
-                $startrow++;
-            }
-        }
+//        if (!empty($solutions["prts"])) {
+//            ksort($solutions["prts"]);
+//            foreach ($solutions["prts"] as $prt_name => $prt) {
+//                $worksheet->setCell($startrow, 0, "Prt " . $prt_name . " points: ");
+//                $worksheet->setCell($startrow, 1, $prt["points"] ?? 0);
+//
+//                // Next line
+//                $startrow++;
+//            }
+//        }
 
         // Leave a blank line between questions
         return $startrow + 1;
