@@ -366,7 +366,7 @@ class Renderer extends RendererILIAS
 
         $DIC->language()->loadLanguageModule("tax");
 
-        $modal = $this->getUIFactory()->modal()->lightbox($this->getUIFactory()->modal()->lightboxTextPage($this->buildTaxonomyNodes($component->getTree()), $this->txt("tax_nodes")));
+        $modal = $this->getUIFactory()->modal()->roundtrip($this->txt("tax_nodes"), [$this->getUIFactory()->legacy($this->buildTaxonomyNodes($component->getTree()))])->withCancelButtonLabel($this->txt("save"));;
         $modal_rendered = $this->render($modal);
 
         $tax_tpl->setVariable("MODAL", $modal_rendered);
