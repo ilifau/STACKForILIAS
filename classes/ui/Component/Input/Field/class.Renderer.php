@@ -27,6 +27,9 @@ use assStackQuestionUtils;
 use Expand;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Component\Input\Container\Form\FormInput;
+use ILIAS\UI\Component\Tree\Node\Factory;
+use ILIAS\UI\Component\Tree\Node\Node;
+use ILIAS\UI\Component\Tree\TreeRecursion;
 use ILIAS\UI\Implementation\Component\Input\Field\Renderer as RendererILIAS;
 use ILIAS\UI\Implementation\Render\Template;
 use ilRTE;
@@ -363,18 +366,7 @@ class Renderer extends RendererILIAS
 
         $DIC->language()->loadLanguageModule("tax");
 
-        $nodes = [];
-
-        $tree = $component->getTaxonomy()->getTree();
-
-        foreach ($tree->getChilds($tree->readRootId()) as $node) {
-            $nodes[] = [
-                "id" => (int) $node["child"],
-                "title" => $node["title"]
-            ];
-        }
-
-        $modal = $this->getUIFactory()->modal()->lightbox($this->getUIFactory()->modal()->lightboxTextPage($this->buildTaxonomyNodes($nodes, $tax_id), $this->txt("tax_nodes")));
+        $modal = $this->getUIFactory()->modal()->lightbox($this->getUIFactory()->modal()->lightboxTextPage($this->buildTaxonomyNodes($component->getTree()), $this->txt("tax_nodes")));
         $modal_rendered = $this->render($modal);
 
         $tax_tpl->setVariable("MODAL", $modal_rendered);
@@ -383,20 +375,28 @@ class Renderer extends RendererILIAS
         return $this->wrapInFormContext($component, $tax_tpl->get(), $id);
     }
 
-    private function buildTaxonomyNodes(array $nodes, string $taxonomy_id): string
+    private function buildTaxonomyNodes(array $tree): string
     {
         global $DIC;
 
-        $checkboxs = "";
+        $factory = $this->getUIFactory();
 
-        foreach ($nodes as $node) {
-            $checkboxs .= $DIC->ui()->renderer()->render(
-                $this->getUIFactory()->input()->field()->checkbox($node["title"])->withAdditionalOnLoadCode(function ($id) use ($node, $taxonomy_id) {
-                    return "$('#$id').attr('node-id', {$node['id']}).attr('node-title', '{$node['title']}').addClass('tax-node').attr('taxonomy-id', '$taxonomy_id');";
-                })
-            );
-        }
+        $renderer = $DIC->ui()->renderer();
 
-        return $checkboxs;
+        $recursion = new class () implements TreeRecursion {
+            public function getChildren($record, $environment = null): array
+            {
+                return $record['children'] ?? [];
+            }
+
+            public function build(Factory $factory, $record, $environment = null): Node
+            {
+                return $factory->simple($record["title"], $record["icon"])->withAdditionalOnLoadCode(function ($id) use ($record) {
+                    return "$('#$id').attr('node-id', {$record['id']}).attr('node-title', '{$record['title']}').attr('taxonomy-id', '{$record['tax_id']}').addClass('taxNodeListItem');";
+                });
+            }
+        };
+
+        return $renderer->render($factory->tree()->expandable('', $recursion)->withData($tree));
     }
 }
