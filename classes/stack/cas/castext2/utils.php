@@ -16,8 +16,6 @@
 
 declare(strict_types = 1);
 
-use ilPlugin;
-
 
 /* CASText2 parser utils */
 
