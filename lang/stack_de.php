@@ -1000,7 +1000,7 @@ $string['ATPartFrac_ret_expression'] = 'Ihre Antwort als einzelne Fraktion ist {
 
 $string['ATSingleFrac_error_list'] = 'Der Antworttest ist fehlgeschlagen. Bitte kontaktieren Sie Ihren Systemadministrator';
 $string['ATSingleFrac_true'] = '';
-$string['ATSingleFrac_part'] = 'Deine Antwort muss ein einzelner Bruch der Form \( {a}\over{b} \) sein.';
+$string['ATCompSquare_false_no_summands']  = 'The completed square is of the form \( a(\cdots\cdots)^2 + b\) where \(a\) and \(b\) do not depend on your variable.  More than one of your summands appears to depend on the variable in your answer.';
 $string['ATSingleFrac_var'] = 'Die Variablen in Ihrer Antwort unterscheiden sich von denen der Frage, bitte überprüfen Sie sie. ';
 $string['ATSingleFrac_ret_exp'] = 'Ihre Antwort ist nicht algebraisch äquivalent zur korrekten Antwort. Sie müssen etwas falsch gemacht haben. ';
 $string['ATSingleFrac_div'] = 'Ihre Antwort enthält Fraktionen innerhalb von Fraktionen. Sie müssen diese beseitigen und Ihre Antwort als einzelne Fraktion schreiben.';
