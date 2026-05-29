@@ -577,7 +577,7 @@ class StackQuestionAuthoringUI
         ], $this->plugin->txt("input_show_validation_info"))->withRequired(true)
             ->withValue($input->get_parameter('showValidation'));
         $inputs["options"] = $this->customFactory->casExpression($this->plugin->txt("input_options"), $this->plugin->txt("input_options_info"))
-            ->withValue($input->get_parameter('options'));
+            ->withValue($input->get_parameter('options', ''));
 
         $this->ctrl->setParameterByClass("assStackQuestionGUI", "input_name", $name);
         $this->ctrl->clearParameterByClass("assStackQuestionGUI", "input_name");
